@@ -36,6 +36,7 @@ fn test_simpleser<T: SimpleSerialize<R>, R: SimpleSerializeVec<T>>(number: uint,
 
     for buffer in buffers.iter() { bytes += buffer.len(); }
 
+    let mut count: uint = 0;
     while time::precise_time_ns() - start < 1000000000
     {
         // decode, move, encode
@@ -49,7 +50,9 @@ fn test_simpleser<T: SimpleSerialize<R>, R: SimpleSerializeVec<T>>(number: uint,
         stack1.encode(&mut buffers);
 
         total += 2 * bytes;
+        count=count+1;
     }
 
-    println!("Encoding/decoding at {}GB/s", total as f64 / (time::precise_time_ns() - start) as f64)
+    println!("Encoding/decoding at {}GB/s, {} values", total as f64 / (time::precise_time_ns() - start) as f64, 1000.0*1000.0*1000.0*
+        count as f64 / (time::precise_time_ns() - start) as f64)
 }
